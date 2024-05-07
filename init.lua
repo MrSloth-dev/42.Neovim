@@ -1,47 +1,32 @@
 --[[
 
-=====================================================================
-==================== READ THIS BEFORE CONTINUING ====================
-=====================================================================
-========                                    .-----.          ========
-========         .----------------------.   | === |          ========
-========         |.-""""""""""""""""""-.|   |-----|          ========
-========         ||                    ||   | === |          ========
-========         ||   KICKSTART.NVIM   ||   |-----|          ========
-========         ||                    ||   | === |          ========
-========         ||                    ||   |-----|          ========
-========         ||:Tutor              ||   |:::::|          ========
-========         |'-..................-'|   |____o|          ========
-========         `"")----------------(""`   ___________      ========
-========        /::::::::::|  |::::::::::\  \ no mouse \     ========
-========       /:::========|  |==hjkl==:::\  \ required \    ========
-========      '""""""""""""'  '""""""""""""'  '""""""""""'   ========
-========                                                     ========
-=====================================================================
-=====================================================================
+                _  _ ___    _   _                 _           _     
+               | || |__ \  | \ | |               (_)         ( )    
+               | || |_ ) | |  \| | ___  _____   ___ _ __ ___ |/ ___ 
+               |__   _/ /  | . ` |/ _ \/ _ \ \ / / | '_ ` _ \  / __|
+                  | |/ /_  | |\  |  __/ (_) \ V /| | | | | | | \__ \
+                  |_|____| |_| \_|\___|\___/ \_/ |_|_| |_| |_| |___/
+             _____             __ _          _____           _       _   
+            / ____|           / _(_)        / ____|         (_)     | |  
+           | |     ___  _ __ | |_ _  __ _  | (___   ___ _ __ _ _ __ | |_ 
+           | |    / _ \| '_ \|  _| |/ _` |  \___ \ / __| '__| | '_ \| __|
+           | |___| (_) | | | | | | | (_| |  ____) | (__| |  | | |_) | |_ 
+           \_____\___/|_| |_|_| |_|\__, | |_____/ \___|_|  |_| .__/ \__|
+                                    __/ |                    | |        
+                                   |___/                     |_|        
+                         _____ _______ ______ __  __ 
+                        |  __ \__   __|  ____|  \/  |
+                        | |__) | | |  | |__  | \  / |
+                        |  _  /  | |  |  __| | |\/| |
+                        | | \ \  | |  | |    | |  | |
+                        |_|  \_\ |_|  |_|    |_|  |_|
+                        Read    The  Friendly Manual             by MrSloth-dev(joao-pol@42porto)
 
-What is Kickstart?
+  Hello everyone, welcome to 42Neovim Configuration with Kickstart!
 
-  Kickstart.nvim is *not* a distribution.
-
-  Kickstart.nvim is a starting point for your own configuration.
-    The goal is that you can read every line of code, top-to-bottom, understand
-    what your configuration is doing, and modify it to suit your needs.
-
-    Once you've done that, you can start exploring, configuring and tinkering to
-    make Neovim your own! That might mean leaving Kickstart just the way it is for a while
-    or immediately breaking it into modular pieces. It's up to you!
-
-    If you don't know anything about Lua, I recommend taking some time to read through
-    a guide. One possible example which will only take 10-15 minutes:
-      - https://learnxinyminutes.com/docs/lua/
-
-    After understanding a bit more about Lua, you can use `:help lua-guide` as a
-    reference for how Neovim integrates Lua.
-    - :help lua-guide
-    - (or HTML version): https://neovim.io/doc/user/lua-guide.html
-
-Kickstart Guide:
+ This is a somewhat minimal configuration for Neovim, I chose Kickstart.nvim because it doesn't have a lot of plugins that can overwhelm you!
+ For more information about Kickstart.nvim please check (https://github.com/nvim-lua/kickstart.nvim)
+ Also check out this video by TJ DeVries that exaplains and guides you through the first steps of kickstart with Nvim (https://www.youtube.com/watch?v=m8C0Cq9Uv9o)
 
   TODO: The very first thing you should do is to run the command `:Tutor` in Neovim.
 
@@ -102,8 +87,12 @@ vim.g.have_nerd_font = false
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
 
+-- Few settings for norminette42 compliance
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = false
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
 
@@ -226,7 +215,6 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -257,6 +245,28 @@ require('lazy').setup({
       },
     },
   },
+
+  -- AFAIK this plugin isn't doing anything but I'll try to look at it to make an Norminette LSP or something
+  { 'hardyrafael17/norminette42.nvim' },
+
+  -- Plugin for 42-header. make sure you change the user and mail!
+  {
+    'Diogo-ss/42-header.nvim',
+    cmd = { 'Stdheader' },
+    keys = { '<F1>' },
+    opts = {
+      default_map = true, -- Default mapping <F1> in normal mode.
+      auto_update = true, -- Update header when saving.
+      user = 'username', -- Your user.
+      mail = 'username@student.42porto.com', -- Your mail.
+      -- add other options.
+    },
+    config = function(_, opts)
+      require('42header').setup(opts)
+    end,
+  },
+
+  -- Few settings for norminette42 compliance
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
@@ -625,43 +635,6 @@ require('lazy').setup({
     end,
   },
 
-  { -- Autoformat
-    'stevearc/conform.nvim',
-    lazy = false,
-    keys = {
-      {
-        '<leader>f',
-        function()
-          require('conform').format { async = true, lsp_fallback = true }
-        end,
-        mode = '',
-        desc = '[F]ormat buffer',
-      },
-    },
-    opts = {
-      notify_on_error = false,
-      format_on_save = function(bufnr)
-        -- Disable "format_on_save lsp_fallback" for languages that don't
-        -- have a well standardized coding style. You can add additional
-        -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = { c = true, cpp = true }
-        return {
-          timeout_ms = 500,
-          lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
-        }
-      end,
-      formatters_by_ft = {
-        lua = { 'stylua' },
-        -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
-        --
-        -- You can use a sub-list to tell conform to run *until* a formatter
-        -- is found.
-        -- javascript = { { "prettierd", "prettier" } },
-      },
-    },
-  },
-
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
@@ -791,27 +764,9 @@ require('lazy').setup({
     end,
   },
 
-  -- Highlight todo, notes, etc in comments
-  { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
-
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
     config = function()
-      -- Better Around/Inside textobjects
-      --
-      -- Examples:
-      --  - va)  - [V]isually select [A]round [)]paren
-      --  - yinq - [Y]ank [I]nside [N]ext [']quote
-      --  - ci'  - [C]hange [I]nside [']quote
-      require('mini.ai').setup { n_lines = 500 }
-
-      -- Add/delete/replace surroundings (brackets, quotes, etc.)
-      --
-      -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
-      -- - sd'   - [S]urround [D]elete [']quotes
-      -- - sr)'  - [S]urround [R]eplace [)] [']
-      require('mini.surround').setup()
-
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
       --  and try some other statusline plugin
