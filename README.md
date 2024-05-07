@@ -4,7 +4,8 @@
 
 A starting point for Neovim that is:
 
-* A Forked version of Kickstart! NOTE:(It is a bit of copy paste yes, make sure you check out the real Kickstart : (https://github.com/nvim-lua/kickstart.nvim)
+* A Forked version of Kickstart!
+* It is a bit of copy paste yes, make sure you check out the real Kickstart : (https://github.com/nvim-lua/kickstart.nvim)
 * Small
 * Single-file
 * Completely Documented
