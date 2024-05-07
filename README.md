@@ -100,3 +100,11 @@ examples of adding popularly requested plugins.
 
 [The Only Video You Need to Get Started with Neovim](https://youtu.be/m8C0Cq9Uv9o)
 
+### Making Neovim a LSP
+#### If you want to have realtime compilation warnings and errors you need to turn on the clang LSP:
+* Open Neovim
+* Type :Mason
+* Search 'Clang' and press I
+* After instalation press q and reset your neovim, and that's all folks!
+
+
