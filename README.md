@@ -21,6 +21,7 @@ You'll need to add certains configurations to make it work (for now):
 
 <details><summary> Autocomplete in Shell </summary>
 Open ~/.zshrc in your home directory and in the end add:
+
 ```sh
 alias nvim=\"flatpak run io.neovim.nvim\"
 compdef nvim="vim"
